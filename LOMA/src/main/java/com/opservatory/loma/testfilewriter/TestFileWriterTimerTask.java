@@ -34,6 +34,10 @@ public class TestFileWriterTimerTask extends TimerTask{
 
 	@Override
 	public void run() {
+		if (currStepIndex > numOfSteps) {
+			cancel();
+			return;
+		}
 		List<String> lines = new ArrayList<String>();
 		for (int i = 0; i < currStepSize; i++) {
 			currLineIndex++;
@@ -47,9 +51,6 @@ public class TestFileWriterTimerTask extends TimerTask{
 		}
 		currStepIndex++;
 		currStepSize += linesStepIncrement;
-		if (currStepIndex > numOfSteps) {
-			cancel();
-		}
 	}
 	
 	@Override
