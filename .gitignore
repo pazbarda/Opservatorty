@@ -24,3 +24,5 @@ hs_err_pid*
 
 .metadata/
 .recommenders/
+LOMA/target/maven-status/
+LOMA/target/surefire-reports/
