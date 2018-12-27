@@ -4,11 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.opservatory.loma.filereader.FileReader;
 import com.opservatory.loma.monitors.IMonitor;
 import com.opservatory.loma.monitors.logfilemonitor.linesanalyzer.ILogLinesAnalyzer;
 import com.opservatory.loma.notifications.IListener;
-
+@Component
+@Scope("prototype")
 public class LogFileMonitor implements IMonitor<List<LogEvent>> {
 	
 	// TODO - make configurable
@@ -18,8 +27,14 @@ public class LogFileMonitor implements IMonitor<List<LogEvent>> {
 	private LogFileMonitorTimerTask timerTask;
 	private Timer timer;
 	
-	public LogFileMonitor(FileReader fileReader, ILogLinesAnalyzer logLinesAnalyzer) {
-		this.timerTask = new LogFileMonitorTimerTask(this, fileReader, logLinesAnalyzer);
+	@Autowired
+	private FileReader fileReader;
+	
+	@Autowired
+	@Qualifier("standardLogLinesAnalyzer")
+	private ILogLinesAnalyzer logLinesAnalyzer;
+	
+	public LogFileMonitor() {
 	}
 	
 	@Override
@@ -44,6 +59,7 @@ public class LogFileMonitor implements IMonitor<List<LogEvent>> {
 	}
 
 	@Override
+	@PreDestroy
 	public void stop() {
 		timer.cancel();
 	}
@@ -58,6 +74,11 @@ public class LogFileMonitor implements IMonitor<List<LogEvent>> {
 		for (IListener<List<LogEvent>> client : clients) {
 			client.newNotification(logEvents);
 		}
+	}
+	
+	@PostConstruct
+	public void init() {
+		this.timerTask = new LogFileMonitorTimerTask(this, fileReader, logLinesAnalyzer);
 	}
 
 }

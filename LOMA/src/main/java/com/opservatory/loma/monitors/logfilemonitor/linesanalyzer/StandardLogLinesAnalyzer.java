@@ -3,10 +3,15 @@ package com.opservatory.loma.monitors.logfilemonitor.linesanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.opservatory.loma.monitors.logfilemonitor.LogEvent;
 import com.opservatory.loma.monitors.logfilemonitor.LogEventLevel;
 
 // TODO - make level of log events configurable
+@Component
+@Scope("prototype")
 public class StandardLogLinesAnalyzer implements ILogLinesAnalyzer {
 
 	@Override

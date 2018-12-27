@@ -9,22 +9,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 // TODO - doc
+@Component
+@Scope("prototype")
 public class FileReader {
-	private final String filePath;
-	private int currentLine;
+//	@Value("${testrun.filePath}")
+	private String filePath = "realTimeTestFile.txt";
+	private int currentLine = 0;
 	// TODO - make configurable
 	private final int READ_ATTEMPT_INTERVAL_MILLISECS = 1000;
 	// TODO - make configurable
 	private static final int READ_TIMEOUT_MILISECS = 60000; 
-		
-	public FileReader(String filePath) {
-		this(filePath, 0);
-	}
 
-	public FileReader(String filePath, int startLine) {
-		this.filePath = filePath;
-		this.currentLine = startLine;
+	public FileReader() {
 	}
 
 	public String getFilePath() {

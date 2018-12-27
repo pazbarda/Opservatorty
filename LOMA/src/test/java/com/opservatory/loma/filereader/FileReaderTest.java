@@ -20,7 +20,7 @@ public class FileReaderTest {
 		
 		TestFileSimpleWriter writer = new TestFileSimpleWriter(filePath);
 		try {
-			FileReader reader = new FileReader(filePath);
+			FileReader reader = new FileReader();
 			
 			// empty file
 			readLines = reader.getNewLines();
